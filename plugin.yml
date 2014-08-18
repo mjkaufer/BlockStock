@@ -1,0 +1,18 @@
+name: BlockStock
+main: me.mjkaufer.BlockStock.BlockStock
+version: 1.0
+author: mjkaufer
+commands:
+    blockstock:
+        description: Converts items into blocks.
+        aliases: [bs]
+        permission: BlockStock.block
+        usage: |
+            /<blockstock> [id] [blocks]
+            Example: /<blockstock> - Converts as many as possible of the currently highlighted inventory item into blocks.
+            Example: /<blockstock> REDSTONE - Converts as many redstone in your inventory as possible into redstone blocks.
+            Example: /<blockstock> REDSTONE 4 - Converts redstone in your inventory into 4 redstone blocks, if possible. 
+permissions:
+    BlockStock.block:
+        description: Allows use of /blockstock
+        default: true
