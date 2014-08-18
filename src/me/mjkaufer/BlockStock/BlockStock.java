@@ -97,21 +97,28 @@ public class BlockStock extends JavaPlugin{
         			Material mat = inHand.getType();
         			data = findMat(mat);
         			before = mat;
-        			System.out.println("MAT: " + mat.toString());
-        			System.out.println(data);
         		}
         		else if (args.length >= 1){
-        			Material mat = Material.matchMaterial(args[0]);
-        			data = findMat(mat);
-        			before = mat;
+    				num = Integer.parseInt(args[0]);
+    				if(num <= 0){
+    					player.sendMessage(ChatColor.RED + "Error: Amount of blocks has to be more than zero!");
+    					return true;
+    				}
         			if(args.length == 2){
-        				num = Integer.parseInt(args[1]);
-        				if(num <= 0){
-        					player.sendMessage(ChatColor.RED + "Error: Amount of blocks has to be more than zero!");
-        					return true;
-        				}
+            			Material mat = Material.matchMaterial(args[1]);
+            			data = findMat(mat);
+            			before = mat;
         			}
-        			System.out.println("MAT: " + mat.toString());
+        			else{//not specifying
+            			ItemStack inHand = player.getItemInHand();
+            			if(inHand.getType().toString().equalsIgnoreCase("AIR")){
+        					player.sendMessage(ChatColor.RED + "Error: You can't make a block out of nothing!");
+            				return true;
+            			}
+            			Material mat = inHand.getType();
+            			data = findMat(mat);
+            			before = mat;
+        			}
         		}
         		else{
         			data = null;
@@ -133,29 +140,29 @@ public class BlockStock extends JavaPlugin{
         			return true;
         		}
         		
+        		for(Integer key : match.keySet()){
+        			ItemStack stack = (ItemStack)match.get(key);
+        			player.getInventory().remove(stack);
+        		}
 
-        		System.out.println("Total: " + total);
-        		System.out.println("new blocks: " + (total / data.getAmount()) * data.getYield());
-        		
         		ItemStack blocks = new ItemStack(data.getAfter(), (total / data.getAmount()) * data.getYield());
-        		ItemStack remove = new ItemStack(before, total - total % data.getAmount());
-        		//ItemStack keep = new ItemStack(before, total % data.getAmount());
-        		
-        		System.out.println("Keep: " + total % data.getAmount());
-        		System.out.println(total);
-        		System.out.println(data.getAmount());
+        		//ItemStack remove = new ItemStack(before, total - total % data.getAmount());
+        		ItemStack keep = new ItemStack(before, total % data.getAmount());
+
         		if(num > 0){//want only 2 blocks of sandstone, have 13 sand, 4 sand makes 4 sandstone, would make 3
         			if(blocks.getAmount() > num){
         				int diff = blocks.getAmount() - num;
         				blocks.setAmount(num);
-        				remove.setAmount(remove.getAmount() - diff * data.getAmount());
-        				//keep.setAmount(keep.getAmount() + diff * data.getAmount());
+//        				remove.setAmount(remove.getAmount() - diff * data.getAmount());
+        				keep.setAmount(keep.getAmount() + diff * data.getAmount());
         			}
         		}
         		
         		//player.getInventory().remove(remove);
-        		if(remove.getAmount() > 0)
-        			player.getInventory().remove(remove);
+//        		if(remove.getAmount() > 0)
+//        			player.getInventory().remove(remove);
+        		if(keep.getAmount() > 0)
+        			player.getInventory().addItem(keep);
         		if(blocks.getAmount() > 0)
         			player.getInventory().addItem(blocks);
         		

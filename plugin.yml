@@ -10,8 +10,8 @@ commands:
         usage: |
             /<blockstock> [id] [blocks]
             Example: /<blockstock> - Converts as many as possible of the currently highlighted inventory item into blocks.
-            Example: /<blockstock> REDSTONE - Converts as many redstone in your inventory as possible into redstone blocks.
-            Example: /<blockstock> REDSTONE 4 - Converts redstone in your inventory into 4 redstone blocks, if possible. 
+            Example: /<blockstock> 4 - Converts four of the currently highlighted inventory item into blocks.
+            Example: /<blockstock> 4 REDSTONE - Converts redstone in your inventory into 4 redstone blocks, if possible. 
 permissions:
     BlockStock.block:
         description: Allows use of /blockstock
